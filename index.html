@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Almoxarifado · Controle de Estoque</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+</head>
+<body>
+
+  <header class="site-header">
+    <div class="header-inner">
+      <div class="brand">
+        <span class="brand-icon">⚕</span>
+        <div>
+          <span class="brand-title">Almoxarifado</span>
+          <span class="brand-sub">Controle de Estoque · Enfermagem</span>
+        </div>
+      </div>
+      <div class="header-status">
+        <span class="status-dot" id="status-dot"></span>
+        <span class="status-text" id="status-text">Conectando...</span>
+      </div>
+    </div>
+  </header>
+  
+  <div class="alerts-bar" id="alerts-bar" hidden>
+    <div class="alert-inner">
+      <span class="alert-icon">⚠</span>
+      <span id="alert-message">Há itens que precisam de atenção.</span>
+    </div>
+  </div>
+
+  <main class="main-layout">
+
+    <aside class="sidebar">
+      <section class="card form-card">
+        <h2 class="card-title">Cadastrar Material</h2>
+        <p class="card-desc">Preencha os campos abaixo para adicionar um novo item ao estoque.</p>
+
+        <div class="form-group">
+          <label for="input-nome">Nome do Material</label>
+          <input
+            type="text"
+            id="input-nome"
+            placeholder="Ex: Seringa 10ml, Gaze estéril..."
+            autocomplete="off"
+          />
+        </div>
+
+        <div class="form-group">
+          <label for="input-quantidade">Quantidade</label>
+          <input
+            type="number"
+            id="input-quantidade"
+            placeholder="0"
+            min="0"
+          />
+        </div>
+
+        <div class="form-group">
+          <label for="input-categoria">Categoria</label>
+          <select id="input-categoria">
+            <option value="">Selecione...</option>
+            <option value="consumo">Material de Consumo (Descartável)</option>
+            <option value="permanente">Material Permanente (Equipamento)</option>
+            <option value="epi">EPI</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="input-validade">Data de Validade</label>
+          <input type="date" id="input-validade" />
+        </div>
+
+        <div class="form-group">
+          <label for="input-instrutor">Instrutor Solicitante</label>
+          <input
+            type="text"
+            id="input-instrutor"
+            placeholder="Nome do instrutor responsável"
+          />
+        </div>
+
+        <button id="btn-cadastrar" class="btn-primary">
+          <span class="btn-label">Cadastrar Material</span>
+          <span class="btn-spinner" hidden>...</span>
+        </button>
+
+        <div class="form-feedback" id="form-feedback" hidden></div>
+      </section>
+
+      <section class="card summary-card">
+        <h3 class="card-title">Resumo do Estoque</h3>
+        <div class="summary-grid">
+          <div class="summary-item">
+            <span class="summary-value" id="total-itens">—</span>
+            <span class="summary-label">Itens cadastrados</span>
+          </div>
+          <div class="summary-item alert-item">
+            <span class="summary-value" id="total-zerados">—</span>
+            <span class="summary-label">Itens zerados</span>
+          </div>
+          <div class="summary-item warn-item">
+            <span class="summary-value" id="total-vencendo">—</span>
+            <span class="summary-label">Vencendo em breve</span>
+          </div>
+        </div>
+      </section>
+    </aside>
+
+    <section class="content-area">
+      <div class="list-header">
+        <h2 class="section-title">Inventário</h2>
+        <div class="list-controls">
+          <input
+            type="search"
+            id="input-busca"
+            class="search-input"
+            placeholder="Buscar material pelo nome..."
+          />
+          <select id="filtro-categoria" class="filter-select">
+            <option value="">Todas as categorias</option>
+            <option value="consumo">Consumo</option>
+            <option value="permanente">Permanente</option>
+            <option value="epi">EPI</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="empty-state" id="empty-state" hidden>
+        <span class="empty-icon">📦</span>
+        <p>Nenhum material cadastrado ainda.</p>
+        <p class="empty-sub">Use o formulário ao lado para adicionar o primeiro item.</p>
+      </div>
+
+      <div class="loading-state" id="loading-state">
+        <div class="skeleton-row"></div>
+        <div class="skeleton-row"></div>
+        <div class="skeleton-row"></div>
+      </div>
+
+      <div class="table-wrapper" id="tabela-wrapper" hidden>
+        <table id="lista-materiais" class="materiais-table">
+          <thead>
+            <tr>
+              <th>Material</th>
+              <th>Categoria</th>
+              <th>Qtd.</th>
+              <th>Validade</th>
+              <th>Instrutor</th>
+              <th>Ações</th>
+            </tr>
+          </thead>
+          <tbody id="tabela-body">
+            
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+  </main>
+
+  <div class="modal-overlay" id="modal-overlay" hidden>
+    <div class="modal-box">
+      <button class="modal-close" id="modal-fechar" aria-label="Fechar">✕</button>
+      <h3 class="modal-title">Atualizar Quantidade</h3>
+      <p class="modal-desc" id="modal-nome-material"></p>
+      <div class="form-group">
+        <label for="modal-quantidade">Nova Quantidade</label>
+        <input type="number" id="modal-quantidade" min="0" />
+      </div>
+      <input type="hidden" id="modal-id" />
+      <div class="modal-actions">
+        <button class="btn-secondary" id="modal-cancelar">Cancelar</button>
+        <button class="btn-primary" id="modal-salvar">Salvar Alteração</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="main.js"></script>
+</body>
+</html>
