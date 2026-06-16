@@ -202,25 +202,26 @@ async function excluirMaterial(id, nome) {
 
 function renderizarTabela(materiais) {
   loadingState.hidden = true;
-
+ 
   const termoBusca = inputBusca.value.toLowerCase();
   const catFiltro  = filtroCategoria.value;
-
+ 
   const filtrados = materiais.filter(m => {
     const nomeOk = m.nome?.toLowerCase().includes(termoBusca);
     const catOk  = catFiltro === "" || m.categoria === catFiltro;
     return nomeOk && catOk;
   });
-
+ 
   if (filtrados.length === 0) {
     emptyState.hidden    = false;
     tabelaWrapper.hidden = true;
     return;
   }
-
-  emptyState.hidden    = true;
+ 
+  emptyState.hidden    = false;
   tabelaWrapper.hidden = false;
-
+  emptyState.hidden    = true;
+ 
   tabelaBody.innerHTML = filtrados.map(m => `
     <tr>
       <td class="td-nome">${escHtml(m.nome || "—")}</td>
@@ -229,13 +230,42 @@ function renderizarTabela(materiais) {
       <td class="td-validade ${classeValidade(m.validade)}">${formatarData(m.validade)}</td>
       <td>${escHtml(m.instrutor || "—")}</td>
       <td class="acoes-cell">
+        <input
+          type="number"
+          class="input-retirada"
+          id="input-retirada"
+          min="1"
+          max="${m.quantidade ?? 0}"
+          placeholder="Qtd"
+          data-id="${m.id}"
+        />
+        <button
+          class="btn-acao btn-baixar"
+          data-id="${m.id}"
+          data-estoque="${m.quantidade ?? 0}"
+          ${(m.quantidade ?? 0) === 0 ? "disabled title='Sem estoque disponível'" : ""}
+        >Baixar</button>
         <button class="btn-acao btn-editar"  onclick="abrirModal('${m.id}', '${escHtml(m.nome)}', ${m.quantidade})">Editar</button>
-        <button class="btn-acao btn-excluir" onclick="excluirMaterial('${m.id}', '${escHtml(m.nome)}')">Excluir</button>
+        <button class="btn-acao btn-excluir" data-id="${m.id}" data-nome="${escHtml(m.nome)}">Excluir</button>
       </td>
     </tr>
   `).join("");
+  
+  tabelaBody.querySelectorAll(".btn-baixar").forEach(btn => {
+    btn.addEventListener("click", () => {
+      const id          = btn.dataset.id;
+      const estoque     = parseInt(btn.dataset.estoque, 10);
+      const inputRet    = btn.closest("tr").querySelector(".input-retirada");
+      baixarEstoque(id, estoque, btn, inputRet);
+    });
+  });
+ 
+  tabelaBody.querySelectorAll(".btn-excluir").forEach(btn => {
+    btn.addEventListener("click", () => {
+      excluirMaterial(btn.dataset.id, btn.dataset.nome);
+    });
+  });
 }
-
 function atualizarResumo(materiais) {
   const zerados   = materiais.filter(m => (m.quantidade ?? 0) === 0);
   const vencendo  = materiais.filter(m => statusValidade(m.validade) === "vencendo");
