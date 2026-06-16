@@ -38,7 +38,6 @@ body {
   line-height: 1.6;
 }
 
-/* ---- HEADER ---- */
 .site-header {
   background: var(--clr-primary);
   color: #fff;
@@ -103,7 +102,6 @@ body {
 .status-dot.online  { background: #2ECC71; box-shadow: 0 0 0 2px rgba(46,204,113,.3); }
 .status-dot.offline { background: #E74C3C; }
 
-/* ---- ALERTS BAR ---- */
 .alerts-bar {
   background: var(--clr-warn-bg);
   border-bottom: 2px solid #F0B429;
@@ -123,7 +121,6 @@ body {
 
 .alert-icon { font-size: 16px; }
 
-/* ---- LAYOUT ---- */
 .main-layout {
   max-width: 1200px;
   margin: 24px auto;
@@ -141,7 +138,6 @@ body {
   }
 }
 
-/* ---- CARDS ---- */
 .card {
   background: var(--clr-surface);
   border: 1px solid var(--clr-border);
@@ -173,7 +169,6 @@ body {
   gap: 16px;
 }
 
-/* ---- FORMULÁRIO ---- */
 .form-group {
   display: flex;
   flex-direction: column;
@@ -212,7 +207,6 @@ body {
 
 .form-group input::placeholder { color: #aab; }
 
-/* ---- BOTÕES ---- */
 .btn-primary {
   width: 100%;
   padding: 11px 16px;
@@ -248,7 +242,6 @@ body {
 }
 .btn-secondary:hover { border-color: var(--clr-accent); color: var(--clr-accent); }
 
-/* ---- FEEDBACK ---- */
 .form-feedback {
   margin-top: 10px;
   padding: 9px 12px;
@@ -260,7 +253,6 @@ body {
 .form-feedback.success { background: #EAFAF1; color: var(--clr-ok); border: 1px solid #A9DFBF; }
 .form-feedback.error   { background: var(--clr-danger-bg); color: var(--clr-danger); border: 1px solid #F1948A; }
 
-/* ---- RESUMO ---- */
 .summary-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -299,7 +291,6 @@ body {
   margin-top: 2px;
 }
 
-/* ---- ÁREA PRINCIPAL ---- */
 .content-area {
   background: var(--clr-surface);
   border: 1px solid var(--clr-border);
@@ -350,7 +341,6 @@ body {
 .search-input:focus,
 .filter-select:focus { border-color: var(--clr-accent); }
 
-/* ---- TABELA ---- */
 .table-wrapper { overflow-x: auto; }
 
 .materiais-table {
@@ -418,7 +408,31 @@ body {
 .validade-vencendo{ color: var(--clr-warn); font-weight: 600; }
 .validade-vencida { color: var(--clr-danger); font-weight: 600; }
 
-.acoes-cell { display: flex; gap: 6px; }
+.acoes-cell {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.input-retirada {
+  width: 60px;
+  padding: 5px 8px;
+  border: 1.5px solid var(--clr-border);
+  border-radius: var(--radius);
+  font-size: 12px;
+  font-family: var(--font-mono);
+  color: var(--clr-text);
+  background: var(--clr-bg);
+  outline: none;
+  text-align: center;
+  transition: border-color .15s, box-shadow .15s;
+}
+.input-retirada:focus {
+  border-color: var(--clr-accent);
+  box-shadow: 0 0 0 3px rgba(46,134,193,.15);
+  background: #fff;
+}
 
 .btn-acao {
   padding: 5px 10px;
@@ -435,10 +449,14 @@ body {
 
 .btn-editar  { background: #D6EAF8; color: #1A5276; border-color: #AED6F1; }
 .btn-editar:hover  { background: #AED6F1; }
+
+.btn-baixar  { background: #D5F5E3; color: #1E8449; border-color: #A9DFBF; }
+.btn-baixar:hover  { background: #A9DFBF; }
+.btn-baixar:disabled { opacity: .45; cursor: not-allowed; }
+
 .btn-excluir { background: var(--clr-danger-bg); color: var(--clr-danger); border-color: #F1948A; }
 .btn-excluir:hover { background: #F1948A; color: #fff; }
 
-/* ---- ESTADOS ---- */
 .empty-state {
   padding: 60px 24px;
   text-align: center;
@@ -468,7 +486,6 @@ body {
   100% { background-position: -100% 0; }
 }
 
-/* ---- MODAL ---- */
 .modal-overlay {
   position: fixed;
   inset: 0;
