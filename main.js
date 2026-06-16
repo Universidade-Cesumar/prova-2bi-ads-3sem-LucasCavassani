@@ -38,6 +38,54 @@ const modalId         = document.getElementById("modal-id");
 
 let todosOsMateriais = [];
 
+function validarRetirada(estoqueAtual, quantidadeRetirada) {
+  if (isNaN(quantidadeRetirada) || quantidadeRetirada <= 0) return false;
+  if (quantidadeRetirada > estoqueAtual) return false;
+  return true;
+}
+ 
+async function baixarEstoque(id, estoqueAtual, btnBaixar, inputRetirada) {
+  const quantidadeRetirada = parseInt(inputRetirada.value, 10);
+ 
+  if (!validarRetirada(estoqueAtual, quantidadeRetirada)) {
+    mostrarFeedback(
+      quantidadeRetirada > estoqueAtual
+        ? `Quantidade inválida: estoque atual é ${estoqueAtual}.`
+        : "Informe uma quantidade válida (mínimo 1).",
+      "error"
+    );
+    inputRetirada.focus();
+    return;
+  }
+ 
+  const novaQuantidade = estoqueAtual - quantidadeRetirada;
+ 
+  btnBaixar.disabled = true;
+  btnBaixar.textContent = "...";
+ 
+  try {
+    const res = await fetch(`${API_URL}/${id}`, {
+      method:  "PUT",
+      headers: { "Content-Type": "application/json" },
+      body:    JSON.stringify({ quantidade: novaQuantidade }),
+    });
+ 
+    if (!res.ok) throw new Error("Erro PUT: " + res.status);
+ 
+    mostrarFeedback(
+      `Baixa realizada! ${quantidadeRetirada} unidade(s) retirada(s). Novo saldo: ${novaQuantidade}.`,
+      "success"
+    );
+    await carregarMateriais();
+ 
+  } catch (err) {
+    console.error("Erro ao realizar baixa:", err);
+    mostrarFeedback("Falha ao atualizar o estoque. Tente novamente.", "error");
+    btnBaixar.disabled = false;
+    btnBaixar.textContent = "Baixar";
+  }
+}
+
 function setStatus(online) {
   statusDot.className  = "status-dot " + (online ? "online" : "offline");
   statusText.textContent = online ? "API conectada" : "Sem conexão";
