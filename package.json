@@ -1,17 +1,19 @@
 {
-  "name": "almoxarifado",
+  "name": "controle-estoque-enfermagem",
   "version": "1.0.0",
-  "description": "Template base para a avaliação final",
+  "description": "Sistema de Controle de Estoque - Almoxarifado de Enfermagem",
+  "main": "main.js",
   "scripts": {
-    "test:sprint1": "jest __tests__/sprint1.test.js",
-    "test:sprint2": "jest __tests__/sprint2.test.js",
-    "test:sprint3": "jest __tests__/sprint3.test.js"
+    "start": "node main.js",
+    "dev": "npx live-server --port=3000 --open=index.html"
+  },
+  "dependencies": {
+    "node-fetch": "^3.3.2"
   },
   "devDependencies": {
-    "jest": "^29.7.0",
-    "jest-environment-jsdom": "^29.7.0"
+    "live-server": "^1.2.2"
   },
-  "jest": {
-    "testEnvironment": "jsdom"
-  }
+  "keywords": ["estoque", "enfermagem", "almoxarifado", "mockapi"],
+  "author": "Lucas Cavassani",
+  "license": "ISC"
 }
