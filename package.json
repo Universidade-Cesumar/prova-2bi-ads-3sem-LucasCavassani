@@ -1,6 +1,6 @@
 {
   "name": "controle-estoque-enfermagem",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "description": "Sistema de Controle de Estoque - Almoxarifado de Enfermagem",
   "main": "main.js",
   "scripts": {
@@ -13,7 +13,7 @@
   "devDependencies": {
     "live-server": "^1.2.2"
   },
-  "keywords": ["estoque", "enfermagem", "almoxarifado", "mockapi"],
+  "keywords": ["estoque", "enfermagem", "almoxarifado", "mockapi", "baixa-estoque"],
   "author": "Lucas Cavassani",
   "license": "ISC"
 }
