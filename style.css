@@ -375,6 +375,16 @@ body {
 .materiais-table tbody tr:last-child td { border-bottom: none; }
 .materiais-table tbody tr:hover { background: #F8FBFD; }
 
+.materiais-table tbody tr.estoque-critico {
+  background: var(--clr-warn-bg);
+}
+.materiais-table tbody tr.estoque-critico:hover {
+  background: #FDF2D0;
+}
+.materiais-table tbody tr.estoque-critico td:first-child {
+  border-left: 3px solid var(--clr-warn);
+}
+
 .td-nome { font-weight: 500; }
 
 .badge-categoria {
@@ -543,5 +553,4 @@ body {
 
 .modal-actions .btn-primary { width: auto; }
 
-/* ---- UTILITIES ---- */
 [hidden] { display: none !important; }
