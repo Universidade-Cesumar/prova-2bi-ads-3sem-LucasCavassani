@@ -1,4 +1,4 @@
-const API_URL = "https://mockapi.io/clone/6a3124697bc5e1c612654136";
+const API_URL = "https://6a3124697bc5e1c612654135.mockapi.io/:endpoint";
 
 const inputNome       = document.getElementById("input-nome");
 const inputQuantidade = document.getElementById("input-quantidade");
